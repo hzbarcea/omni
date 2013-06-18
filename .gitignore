@@ -1,6 +1,22 @@
+# build artifacts
+*~
+*.orig
+*.rej
+*.swp
+*.local
 *.class
+target
+derby.log
+.DS_Store
 
-# Package Files #
-*.jar
-*.war
-*.ear
+# ide artifacts
+.project
+.classpath
+.settings
+.metadata
+.checkstyle
+.ruleset
+.pmd
+*.iml
+*.ipr
+*.iws
