@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 The Fictitions OMNI Corporation
+ * Copyright 2013 The Fictitious OMNI Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,11 +31,11 @@ public class Asset {
 	private String mediaLocation;
 	private Date mediaMovedDate;
 	private String mediaName;
-	private int status;
+	private long status;
 	private String mediaNameInLibrary;
-	private int idQCitems;
-	private int idAssetsQCitems;
-	private int idAssetsQCroot;
+	private long idQCitems;
+	private long idAssetsQCitems;
+	private long idAssetsQCroot;
 
 	public String getAutoQCUrl() {
 		return autoQCUrl;
@@ -67,10 +67,10 @@ public class Asset {
 	public void setMediaName(String mediaName) {
 		this.mediaName = mediaName;
 	}
-	public int getStatus() {
+	public long getStatus() {
 		return status;
 	}
-	public void setStatus(int status) {
+	public void setStatus(long status) {
 		this.status = status;
 	}
 	public String getMediaNameInLibrary() {
@@ -79,22 +79,22 @@ public class Asset {
 	public void setMediaNameInLibrary(String mediaNameInLibrary) {
 		this.mediaNameInLibrary = mediaNameInLibrary;
 	}
-	public int getIdQCitems() {
+	public long getIdQCitems() {
 		return idQCitems;
 	}
-	public void setIdQCitems(int idQCitems) {
+	public void setIdQCitems(long idQCitems) {
 		this.idQCitems = idQCitems;
 	}
-	public int getIdAssetsQCitems() {
+	public long getIdAssetsQCitems() {
 		return idAssetsQCitems;
 	}
-	public void setIdAssetsQCitems(int idAssetsQCitems) {
+	public void setIdAssetsQCitems(long idAssetsQCitems) {
 		this.idAssetsQCitems = idAssetsQCitems;
 	}
-	public int getIdAssetsQCroot() {
+	public long getIdAssetsQCroot() {
 		return idAssetsQCroot;
 	}
-	public void setIdAssetsQCroot(int idAssetsQCroot) {
+	public void setIdAssetsQCroot(long idAssetsQCroot) {
 		this.idAssetsQCroot = idAssetsQCroot;
 	}
 
