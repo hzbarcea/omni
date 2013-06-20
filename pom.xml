@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <!--
   Copyright 2013 The Fictitious OMNI Corporation
 
@@ -41,6 +40,7 @@
     <log4j.version>1.2.17</log4j.version>
     <netty.version>3.6.6.Final</netty.version>
     <slf4j.version>1.7.2</slf4j.version>
+    <slf4j-api.version>1.6.6</slf4j-api.version>
     <spring.version>3.0.7.RELEASE</spring.version>
 
     <maven-compiler-plugin.version>2.5.1</maven-compiler-plugin.version>
@@ -49,6 +49,12 @@
     <build-helper-maven-plugin.version>1.7</build-helper-maven-plugin.version>
     <exec-maven-plugin.version>1.2.1</exec-maven-plugin.version>
     <maven-eclipse-plugin.version>2.9</maven-eclipse-plugin.version>
+
+    <omni.osgi.imports>
+      org.slf4j.*;version="[1.6,2)"
+    </omni.osgi.imports>
+    <omni.osgi.import.default.version>[$(version;==;$(@)),$(version;+;$(@)))</omni.osgi.import.default.version>
+    
   </properties>
    
   <modules>
@@ -118,7 +124,7 @@
       <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-api</artifactId>
-        <version>${slf4j.version}</version>
+        <version>${slf4j-api.version}</version>
       </dependency>
       <dependency>
         <groupId>org.slf4j</groupId>
@@ -142,11 +148,16 @@
   <build>
     <plugins>
       <plugin>
-        <groupId>org.apache.camel</groupId>
-        <artifactId>camel-maven-plugin</artifactId>
-        <version>${camel.version}</version>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+        <version>${maven-bundle-plugin.version}</version>
+        <extensions>true</extensions>
         <configuration>
-          <useBlueprint>true</useBlueprint>
+          <excludeDependencies>false</excludeDependencies>
+          <instructions>
+            <Import-Package>${omni.osgi.imports},*</Import-Package>
+            <_versionpolicy>${omni.osgi.import.default.version}</_versionpolicy>
+          </instructions>
         </configuration>
       </plugin>
     </plugins>
@@ -161,12 +172,6 @@
             <source>1.6</source>
             <target>1.6</target>
           </configuration>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.felix</groupId>
-          <artifactId>maven-bundle-plugin</artifactId>
-          <version>${maven-bundle-plugin.version}</version>
-          <extensions>true</extensions>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
