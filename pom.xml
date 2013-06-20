@@ -75,11 +75,32 @@
         <groupId>javax.annotation</groupId>
         <artifactId>jsr250-api</artifactId>
         <version>${jsr250-api.version}</version>
+        <type>jar</type>
       </dependency>
       <dependency>
-        <groupId>org.apache.cxf</groupId>
-        <artifactId>cxf-rt-frontend-jaxrs</artifactId>
-        <version>${cxf.version}</version>
+          <groupId>org.apache.cxf</groupId>
+          <artifactId>cxf-rt-frontend-jaxrs</artifactId>
+          <version>${cxf.version}</version>
+      </dependency>
+      <dependency>
+          <groupId>org.apache.cxf</groupId>
+          <artifactId>cxf-rt-frontend-simple</artifactId>
+          <version>${cxf.version}</version>
+      </dependency>
+      <dependency>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-web</artifactId>
+          <version>${spring.version}</version>
+      </dependency>
+      <dependency>
+          <groupId>org.eclipse.jetty</groupId>
+          <artifactId>jetty-server</artifactId>
+          <version>${jetty.version}</version>
+      </dependency>
+      <dependency>
+          <groupId>org.eclipse.jetty</groupId>
+          <artifactId>jetty-webapp</artifactId>
+          <version>${jetty.version}</version>
       </dependency>
  
       <dependency>
@@ -90,6 +111,16 @@
       <dependency>
         <groupId>org.apache.camel</groupId>
         <artifactId>camel-blueprint</artifactId>
+        <version>${camel.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-spring</artifactId>
+        <version>${camel.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.camel</groupId>
+        <artifactId>camel-jetty</artifactId>
         <version>${camel.version}</version>
       </dependency>
       <dependency>
@@ -119,6 +150,12 @@
         <groupId>org.apache.camel</groupId>
         <artifactId>camel-jaxb</artifactId>
         <version>${camel.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-web</artifactId>
+        <version>${spring.version}</version>
       </dependency>
 
       <!-- logging -->
