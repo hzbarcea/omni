@@ -35,9 +35,9 @@
   <!-- blueprint property placeholder -->
   <cm:property-placeholder persistent-id="org.talend.example.omni" />
 
-  <jaxrs:server address="camel://direct:osiris" id="http-server">
+  <jaxrs:server id="http-server" address="camel://direct:osiris">
     <jaxrs:serviceBeans>
-      <ref bean="osiris" />
+      <ref component-id="osiris" />
     </jaxrs:serviceBeans>
     <jaxrs:inInterceptors>
       <bean class="org.apache.cxf.interceptor.LoggingOutInterceptor"/>
