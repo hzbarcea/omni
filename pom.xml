@@ -34,14 +34,14 @@
 
     <camel.version>2.10.2</camel.version>
     <cxf.version>2.7.3</cxf.version>
-    <jsr250-api.version>1.0</jsr250-api.version>
     <jetty.version>7.6.8.v20121106</jetty.version>
+    <jsr250-api.version>1.0</jsr250-api.version>
     <junit.version>4.11</junit.version>
     <karaf.version>2.3.1</karaf.version>
     <log4j.version>1.2.17</log4j.version>
     <netty.version>3.6.6.Final</netty.version>
-    <slf4j.version>1.7.2</slf4j.version>
     <slf4j-api.version>1.6.6</slf4j-api.version>
+    <slf4j.version>1.7.2</slf4j.version>
     <spring.version>3.0.7.RELEASE</spring.version>
 
     <maven-compiler-plugin.version>2.5.1</maven-compiler-plugin.version>

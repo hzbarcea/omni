@@ -34,9 +34,15 @@
     <jaxrs:serviceBeans>
       <ref bean="osiris" />
     </jaxrs:serviceBeans>
+    <jaxrs:providers>
+      <ref bean="jsonProvider"/>
+    </jaxrs:providers>
   </jaxrs:server>
 
   <bean id="osiris" class="org.talend.example.omni.service.OsirisService" />
+  <bean id="jsonProvider" class="org.apache.cxf.jaxrs.provider.json.JSONProvider">
+      <property name="ignoreNamespaces" value="true"/>
+  </bean>
 
   <!-- Camel processing rules -->
   <camelContext id="omni" xmlns="http://camel.apache.org/schema/spring">
