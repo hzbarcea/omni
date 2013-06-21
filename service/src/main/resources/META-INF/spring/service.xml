@@ -37,8 +37,6 @@
   </jaxrs:server>
 
   <bean id="osiris" class="org.talend.example.omni.service.OsirisService" />
-  <bean id="stripPrefix" class="org.talend.example.omni.service.StripPrefixProcessor" />
-  <!-- bean id="jetty" class="org.apache.camel.component.jetty.JettyHttpComponent" / -->
 
   <!-- Camel processing rules -->
   <camelContext id="omni" xmlns="http://camel.apache.org/schema/spring">
@@ -46,7 +44,7 @@
     <!--  This route offers the cxf endpoint using an embedded jetty instance -->
     <route>
       <from uri="jetty:http://0.0.0.0:9099/Adoniss.RESTServices/?matchOnUriPrefix=true" />
-      <bean ref="stripPrefix" />
+      <!-- Can do extra processing here -->
       <to uri="direct:osiris" />
     </route>
 
