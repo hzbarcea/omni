@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
   Copyright 2013 The Fictitious OMNI Corporation
 
@@ -47,6 +48,7 @@
     <maven-bundle-plugin.version>2.1.0</maven-bundle-plugin.version>
     <maven-resources-plugin.version>2.6</maven-resources-plugin.version>
     <build-helper-maven-plugin.version>1.7</build-helper-maven-plugin.version>
+    <maven-jaxb2-plugin.version>0.8.3</maven-jaxb2-plugin.version>
     <exec-maven-plugin.version>1.2.1</exec-maven-plugin.version>
     <maven-eclipse-plugin.version>2.9</maven-eclipse-plugin.version>
 
@@ -220,6 +222,35 @@
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>build-helper-maven-plugin</artifactId>
           <version>${build-helper-maven-plugin.version}</version>
+        </plugin>
+        <plugin>
+          <groupId>org.jvnet.jaxb2.maven2</groupId>
+          <artifactId>maven-jaxb2-plugin</artifactId>
+          <version>${maven-jaxb2-plugin.version}</version>
+          <executions>
+            <execution>
+              <id>generate</id>
+              <goals>
+                <goal>generate</goal>
+              </goals>
+            </execution>
+          </executions>
+          <configuration>
+            <schemaDirectory>src/main/resources/xsd</schemaDirectory>
+            <verbose>true</verbose>
+            <strict>false</strict>
+            <extension>true</extension>
+            <args>
+              <arg>-Xfluent-api</arg>
+            </args>
+            <plugins>
+              <plugin>
+                <groupId>net.java.dev.jaxb2-commons</groupId>
+                <artifactId>jaxb-fluent-api</artifactId>
+                <version>2.1.8</version>
+              </plugin>
+            </plugins>
+          </configuration>
         </plugin>
         <plugin>
           <groupId>org.codehaus.mojo</groupId>

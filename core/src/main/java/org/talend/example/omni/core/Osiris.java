@@ -23,6 +23,11 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
+import org.talend.example.omni.types.ArrayOfGetAutoQCAssetMetadataResult;
+import org.talend.example.omni.types.ArrayOfGetAutoQCAssetsResult;
+import org.talend.example.omni.types.ArrayOfUpdateAssetsQCItemsResult;
+import org.talend.example.omni.types.UpdateAssetsQCItemsRequest;
+
 
 @Path("/AdonissRESTService")
 @Produces({ "application/xml", "application/json" })
@@ -30,14 +35,15 @@ import javax.ws.rs.Produces;
 public interface Osiris {
 
     @PUT
-    AssetUpdateItemList updateItems(AssetUpdateRequest items) throws Exception;
+	@Path("/UpdateAssetsQCItems")
+    ArrayOfUpdateAssetsQCItemsResult updateItems(UpdateAssetsQCItemsRequest items) throws Exception;
 
 	@GET
 	@Path("/GetAutoQCAssets/{items}/{statuses}")
-    AssetList listAssets(@PathParam("items") String items, @PathParam("statuses") String statuses);
+	ArrayOfGetAutoQCAssetsResult listAssets(@PathParam("items") String items, @PathParam("statuses") String statuses);
 
 	@GET
 	@Path("/GetAutoQCAssetMetadata/{root}/{obids}")
-    AssetMetadataList listAssetMetadata(@PathParam("root") long root, @PathParam("obids") String ids);
+	ArrayOfGetAutoQCAssetMetadataResult listAssetMetadata(@PathParam("root") long root, @PathParam("obids") String ids);
 
 }

@@ -16,67 +16,76 @@
 
 package org.talend.example.omni.service;
 
-import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.talend.example.omni.core.Asset;
-import org.talend.example.omni.core.AssetList;
-import org.talend.example.omni.core.AssetMetadata;
-import org.talend.example.omni.core.AssetMetadataList;
-import org.talend.example.omni.core.AssetUpdateItemList;
-import org.talend.example.omni.core.AssetUpdateRequest;
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+
 import org.talend.example.omni.core.Osiris;
+import org.talend.example.omni.types.ArrayOfGetAutoQCAssetMetadataResult;
+import org.talend.example.omni.types.ArrayOfGetAutoQCAssetsResult;
+import org.talend.example.omni.types.ArrayOfUpdateAssetsQCItemsResult;
+import org.talend.example.omni.types.GetAutoQCAssetMetadataResult;
+import org.talend.example.omni.types.GetAutoQCAssetsResult;
+import org.talend.example.omni.types.UpdateAssetsQCItemsRequest;
 
 
 public class OsirisService implements Osiris {
 
-	private Map<Long, Asset> assets = new HashMap<Long, Asset>();
-	private Map<Long, AssetMetadata> assetMetadata = new HashMap<Long, AssetMetadata>();
+	private Map<Integer, GetAutoQCAssetsResult> assets = new HashMap<Integer, GetAutoQCAssetsResult>();
+	private Map<Integer, GetAutoQCAssetMetadataResult> assetMetadata = new HashMap<Integer, GetAutoQCAssetMetadataResult>();
 
 	public OsirisService() {
-		Asset asset = new Asset();
-		asset.setAutoQCUrl("String content");
-		asset.setComment("String content");
-		asset.setMediaLocation("String content");
-		asset.setMediaMovedDate(new Date());
-		asset.setMediaName("String content");
-		asset.setStatus(2147483647);
-		asset.setMediaNameInLibrary("String content");
-		asset.setIdQCitems(2147483647);
-		asset.setIdAssetsQCitems(2147483647);
-		asset.setIdAssetsQCroot(2147483647);
-		assets.put(asset.getIdQCitems(), asset);
+		GregorianCalendar now = new GregorianCalendar();
 
-		asset = new Asset();
-		asset.setAutoQCUrl("String content");
-		asset.setComment("String content");
-		asset.setMediaLocation("String content");
-		asset.setMediaMovedDate(new Date());
-		asset.setMediaName("String content");
-		asset.setStatus(2147483646);
-		asset.setMediaNameInLibrary("String content");
-		asset.setIdQCitems(2147483646);
-		asset.setIdAssetsQCitems(2147483646);
-		asset.setIdAssetsQCroot(2147483646);
-		assets.put(asset.getIdQCitems(), asset);
+		try {
+			GetAutoQCAssetsResult asset = new GetAutoQCAssetsResult();
+			asset.setAutoQCUrl("String content");
+			asset.setComment("String content");
+			asset.setMediaLocation("String content");
+			asset.setMediaMovedDate(DatatypeFactory.newInstance().newXMLGregorianCalendar(now));
+			asset.setMediaName("String content");
+			asset.setStatus(2147483646);
+			asset.setCMediaNameInLibrary("String content");
+			asset.setIdQCItems(2147483646);
+			asset.setIdAssetsQCItems(2147483646);
+			asset.setIdAssetsRoot(2147483646);
+			assets.put(asset.getIdQCItems(), asset);
+	
+			asset = new GetAutoQCAssetsResult();
+			asset.setAutoQCUrl("String content");
+			asset.setComment("String content");
+			asset.setMediaLocation("String content");
+			asset.setMediaMovedDate(DatatypeFactory.newInstance().newXMLGregorianCalendar(now));
+			asset.setMediaName("String content");
+			asset.setStatus(2147483647);
+			asset.setCMediaNameInLibrary("String content");
+			asset.setIdQCItems(2147483647);
+			asset.setIdAssetsQCItems(2147483647);
+			asset.setIdAssetsRoot(2147483647);
+			assets.put(asset.getIdQCItems(), asset);
+		} catch (DatatypeConfigurationException e) {
+			// ignore
+		}
 	}
 
-	public AssetUpdateItemList updateItems(AssetUpdateRequest items) throws Exception {
+	public ArrayOfUpdateAssetsQCItemsResult updateItems(UpdateAssetsQCItemsRequest items) throws Exception {
 		// TODO: implement me
 		return null;
 	}
 
-	public AssetList listAssets(String items, String statuses) {
-		AssetList assetArray = new AssetList();
-		assetArray.setData((Asset[])assets.values().toArray(new Asset[]{}));
-        return assetArray;
+	public ArrayOfGetAutoQCAssetsResult listAssets(String items, String statuses) {
+		ArrayOfGetAutoQCAssetsResult result = new ArrayOfGetAutoQCAssetsResult();
+		result.getGetAutoQCAssetsResults().addAll(assets.values());
+        return result;
 	}
 
-	public AssetMetadataList listAssetMetadata(long root, String ids) {
-		AssetMetadataList assetMetadataArray = new AssetMetadataList();
-		assetMetadataArray.setData((AssetMetadata[])assetMetadata.values().toArray(new AssetMetadata[]{}));
-        return assetMetadataArray;
+	public ArrayOfGetAutoQCAssetMetadataResult listAssetMetadata(long root, String ids) {
+		ArrayOfGetAutoQCAssetMetadataResult result = new ArrayOfGetAutoQCAssetMetadataResult();
+		result.getGetAutoQCAssetMetadataResults().addAll(assetMetadata.values());
+        return result;
 	}
 
 }
