@@ -16,16 +16,18 @@
 
 package org.talend.example.omni.core;
 
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 
-@XmlRootElement(namespace = "http://org.omni", name = "ArrayOfUpdateItem_Result")
+@XmlRootElement(namespace = "http://schemas.datacontract.org/2004/07/Adoniss.Model.Adoniss", name = "ArrayOfUpdateAssetsQCItems_Result")
 @XmlType
 public class AssetUpdateItemList {
 
 	private AssetUpdateItem[] data;
 
+	@XmlElement(name = "UpdateAssetsQCItems_Result")
     public AssetUpdateItem[] getData() {
 		return data;
 	}

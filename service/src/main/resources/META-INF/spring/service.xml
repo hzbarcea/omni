@@ -45,7 +45,7 @@
 
     <!--  This route offers the cxf endpoint using an embedded jetty instance -->
     <route>
-      <from uri="jetty:http://0.0.0.0:9099/omni?matchOnUriPrefix=true" />
+      <from uri="jetty:http://0.0.0.0:9099/Adoniss.RESTServices/?matchOnUriPrefix=true" />
       <bean ref="stripPrefix" />
       <to uri="direct:osiris" />
     </route>

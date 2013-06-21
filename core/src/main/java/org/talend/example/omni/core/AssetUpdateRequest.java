@@ -18,11 +18,12 @@ package org.talend.example.omni.core;
 
 import java.util.Date;
 
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 
-@XmlRootElement(namespace = "http://org.omni", name = "UpdateAssetRequest")
+@XmlRootElement(namespace = "http://schemas.datacontract.org/2004/07/Adoniss.RESTServices", name = "UpdateAssetsQCItemsRequest")
 @XmlType
 public class AssetUpdateRequest {
     
@@ -30,39 +31,45 @@ public class AssetUpdateRequest {
 	private String comment;
 	private String items;
 	private Date dtStatus;
-	private long idStatus;
+	private long iStatus;
 	private long user;
 
+	@XmlElement(name = "c_auto_QC_URL")
 	public String getAutoQCUrl() {
 		return autoQCUrl;
 	}
 	public void setAutoQCUrl(String autoQCUrl) {
 		this.autoQCUrl = autoQCUrl;
 	}
+	@XmlElement(name = "c_comment")
 	public String getComment() {
 		return comment;
 	}
 	public void setComment(String comment) {
 		this.comment = comment;
 	}
+	@XmlElement(name = "c_id_assets_QC_items")
 	public String getItems() {
 		return items;
 	}
 	public void setItems(String items) {
 		this.items = items;
 	}
+	@XmlElement(name = "dt_status")
 	public Date getDtStatus() {
 		return dtStatus;
 	}
 	public void setDtStatus(Date dtStatus) {
 		this.dtStatus = dtStatus;
 	}
-	public long getIdStatus() {
-		return idStatus;
+	@XmlElement(name = "i_status")
+	public long getIStatus() {
+		return iStatus;
 	}
-	public void setIdStatus(long idStatus) {
-		this.idStatus = idStatus;
+	public void setIStatus(long iStatus) {
+		this.iStatus = iStatus;
 	}
+	@XmlElement(name = "id_adonissuser")
 	public long getUser() {
 		return user;
 	}

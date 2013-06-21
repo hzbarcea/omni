@@ -18,14 +18,15 @@ package org.talend.example.omni.core;
 
 import java.util.Date;
 
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 
-@XmlRootElement(namespace = "http://org.omni", name = "Asset")
+@XmlRootElement(namespace = "http://schemas.datacontract.org/2004/07/Adoniss.Model.Adoniss", name = "GetAutoQCAssets")
 @XmlType
 public class Asset {
-    
+
 	private String autoQCUrl;
 	private String comment;
 	private String mediaLocation;
@@ -37,60 +38,70 @@ public class Asset {
 	private long idAssetsQCitems;
 	private long idAssetsQCroot;
 
+	@XmlElement(name = "AutoQCUrl")
 	public String getAutoQCUrl() {
 		return autoQCUrl;
 	}
 	public void setAutoQCUrl(String autoQCUrl) {
 		this.autoQCUrl = autoQCUrl;
 	}
+	@XmlElement(name = "Comment")
 	public String getComment() {
 		return comment;
 	}
 	public void setComment(String comment) {
 		this.comment = comment;
 	}
+	@XmlElement(name = "MediaLocation")
 	public String getMediaLocation() {
 		return mediaLocation;
 	}
 	public void setMediaLocation(String mediaLocation) {
 		this.mediaLocation = mediaLocation;
 	}
+	@XmlElement(name = "MediaMovedDate")
 	public Date getMediaMovedDate() {
 		return mediaMovedDate;
 	}
 	public void setMediaMovedDate(Date mediaMovedDate) {
 		this.mediaMovedDate = mediaMovedDate;
 	}
+	@XmlElement(name = "MediaName")
 	public String getMediaName() {
 		return mediaName;
 	}
 	public void setMediaName(String mediaName) {
 		this.mediaName = mediaName;
 	}
+	@XmlElement(name = "Status")
 	public long getStatus() {
 		return status;
 	}
 	public void setStatus(long status) {
 		this.status = status;
 	}
+	@XmlElement(name = "c_media_name_in_library")
 	public String getMediaNameInLibrary() {
 		return mediaNameInLibrary;
 	}
 	public void setMediaNameInLibrary(String mediaNameInLibrary) {
 		this.mediaNameInLibrary = mediaNameInLibrary;
 	}
+	@XmlElement(name = "id_QC_items")
 	public long getIdQCitems() {
 		return idQCitems;
 	}
 	public void setIdQCitems(long idQCitems) {
 		this.idQCitems = idQCitems;
 	}
+	@XmlElement(name = "id_assets_QC_items")
 	public long getIdAssetsQCitems() {
 		return idAssetsQCitems;
 	}
 	public void setIdAssetsQCitems(long idAssetsQCitems) {
 		this.idAssetsQCitems = idAssetsQCitems;
 	}
+	@XmlElement(name = "id_assets_root")
 	public long getIdAssetsQCroot() {
 		return idAssetsQCroot;
 	}

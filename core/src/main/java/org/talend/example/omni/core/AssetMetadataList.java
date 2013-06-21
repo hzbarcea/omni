@@ -16,16 +16,18 @@
 
 package org.talend.example.omni.core;
 
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 
-@XmlRootElement(namespace = "http://org.omni", name = "ArrayOfMetadata_Result")
+@XmlRootElement(namespace = "http://schemas.datacontract.org/2004/07/Adoniss.Model.Adoniss", name = "ArrayOfGetAutoQCAssetMetadata_Result")
 @XmlType
 public class AssetMetadataList {
 
 	private AssetMetadata[] data;
 
+	@XmlElement(name = "GetAutoQCAssetMetadata_Result")
     public AssetMetadata[] getData() {
 		return data;
 	}

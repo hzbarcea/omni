@@ -16,6 +16,7 @@
 
 package org.talend.example.omni.service;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,18 +34,46 @@ public class OsirisService implements Osiris {
 	private Map<Long, Asset> assets = new HashMap<Long, Asset>();
 	private Map<Long, AssetMetadata> assetMetadata = new HashMap<Long, AssetMetadata>();
 
+	public OsirisService() {
+		Asset asset = new Asset();
+		asset.setAutoQCUrl("String content");
+		asset.setComment("String content");
+		asset.setMediaLocation("String content");
+		asset.setMediaMovedDate(new Date());
+		asset.setMediaName("String content");
+		asset.setStatus(2147483647);
+		asset.setMediaNameInLibrary("String content");
+		asset.setIdQCitems(2147483647);
+		asset.setIdAssetsQCitems(2147483647);
+		asset.setIdAssetsQCroot(2147483647);
+		assets.put(asset.getIdQCitems(), asset);
+
+		asset = new Asset();
+		asset.setAutoQCUrl("String content");
+		asset.setComment("String content");
+		asset.setMediaLocation("String content");
+		asset.setMediaMovedDate(new Date());
+		asset.setMediaName("String content");
+		asset.setStatus(2147483646);
+		asset.setMediaNameInLibrary("String content");
+		asset.setIdQCitems(2147483646);
+		asset.setIdAssetsQCitems(2147483646);
+		asset.setIdAssetsQCroot(2147483646);
+		assets.put(asset.getIdQCitems(), asset);
+	}
+
 	public AssetUpdateItemList updateItems(AssetUpdateRequest items) throws Exception {
 		// TODO: implement me
 		return null;
 	}
 
-	public AssetList listAssets() {
+	public AssetList listAssets(String items, String statuses) {
 		AssetList assetArray = new AssetList();
 		assetArray.setData((Asset[])assets.values().toArray(new Asset[]{}));
         return assetArray;
 	}
 
-	public AssetMetadataList listAssetMetadata() {
+	public AssetMetadataList listAssetMetadata(long root, String ids) {
 		AssetMetadataList assetMetadataArray = new AssetMetadataList();
 		assetMetadataArray.setData((AssetMetadata[])assetMetadata.values().toArray(new AssetMetadata[]{}));
         return assetMetadataArray;

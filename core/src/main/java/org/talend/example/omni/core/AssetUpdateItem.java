@@ -16,23 +16,26 @@
 
 package org.talend.example.omni.core;
 
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 
-@XmlRootElement(namespace = "http://org.omni", name = "UpdateAssetItem")
+@XmlRootElement(namespace = "http://schemas.datacontract.org/2004/07/Adoniss.Model.Adoniss", name = "UpdateAssetsQCItem")
 @XmlType
 public class AssetUpdateItem {
     
 	private long code;
 	private String codeDescription;
 
+	@XmlElement(name = "returncode")
 	public long getCode() {
 		return code;
 	}
 	public void setCode(long code) {
 		this.code = code;
 	}
+	@XmlElement(name = "returncodedesc")
 	public String getCodeDescription() {
 		return codeDescription;
 	}

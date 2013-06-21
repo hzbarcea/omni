@@ -20,10 +20,11 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
 
-@Path("/")
+@Path("/AdonissRESTService")
 @Produces({ "application/xml", "application/json" })
 @Consumes({ "application/xml", "application/json" })
 public interface Osiris {
@@ -32,9 +33,11 @@ public interface Osiris {
     AssetUpdateItemList updateItems(AssetUpdateRequest items) throws Exception;
 
 	@GET
-    AssetList listAssets();
+	@Path("/GetAutoQCAssets/{items}/{statuses}")
+    AssetList listAssets(@PathParam("items") String items, @PathParam("statuses") String statuses);
 
 	@GET
-    AssetMetadataList listAssetMetadata();
+	@Path("/GetAutoQCAssetMetadata/{root}/{obids}")
+    AssetMetadataList listAssetMetadata(@PathParam("root") long root, @PathParam("obids") String ids);
 
 }

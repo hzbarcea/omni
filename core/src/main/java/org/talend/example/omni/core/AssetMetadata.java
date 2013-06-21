@@ -16,11 +16,12 @@
 
 package org.talend.example.omni.core;
 
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 
-@XmlRootElement(namespace = "http://org.omni", name = "Metadata_Result")
+@XmlRootElement(namespace = "http://schemas.datacontract.org/2004/07/Adoniss.Model.Adoniss", name = "GetAutoQCAssetMetadata")
 @XmlType
 public class AssetMetadata {
 
@@ -30,30 +31,35 @@ public class AssetMetadata {
     private long idAssetSubtype;
     private long idObject;
 
+	@XmlElement(name = "Value")
     public String getValue() {
 		return value;
 	}
 	public void setValue(String value) {
 		this.value = value;
 	}
+	@XmlElement(name = "id_assets")
 	public long getIdAssets() {
 		return idAssets;
 	}
 	public void setIdAssets(long idAssets) {
 		this.idAssets = idAssets;
 	}
+	@XmlElement(name = "id_assets_root")
 	public long getIdAssetsRoot() {
 		return idAssetsRoot;
 	}
 	public void setIdAssetsRoot(long idAssetsRoot) {
 		this.idAssetsRoot = idAssetsRoot;
 	}
+	@XmlElement(name = "id_assetsubtype")
 	public long getIdAssetSubtype() {
 		return idAssetSubtype;
 	}
 	public void setIdAssetSubtype(long idAssetSubtype) {
 		this.idAssetSubtype = idAssetSubtype;
 	}
+	@XmlElement(name = "id_object")
 	public long getIdObject() {
 		return idObject;
 	}
