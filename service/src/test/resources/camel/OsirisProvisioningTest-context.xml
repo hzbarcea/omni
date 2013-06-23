@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright 2013 The Fictitious OMNI Corporation
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="
+      http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+      http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+      http://cxf.apache.org/transports/jms http://cxf.apache.org/schemas/configuration/jms.xsd
+      http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+      http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd
+      http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+  <bean id="osiris-library" class="org.talend.example.omni.core.OsirisLibrary" />
+
+  <bean id="noErrorHandler" class="org.apache.camel.builder.NoErrorHandlerBuilder"/>
+
+  <camelContext id="camel" errorHandlerRef="noErrorHandler"
+      xmlns="http://camel.apache.org/schema/spring">
+
+    <route>
+      <from uri="file:src/test/resources/data/?fileName=osiris-data.csv&amp;noop=true" />
+      <unmarshal><csv delimiter="|" skipFirstLine="true" /></unmarshal>
+      <split>
+        <simple>${body}</simple>
+        <convertBodyTo type="org.talend.example.omni.types.GetAutoQCAssetsResult" />
+        <to uri="log:org.talend.example.omni" />
+        <to uri="mock:osiris-data" />
+      </split>
+    </route>
+
+    <!-- provisioning -->
+    <route id="test-provision-assets">
+      <from uri="file:src/test/resources/data/?fileName=osiris-assets.csv&amp;noop=true" />
+      <unmarshal><csv delimiter="|" skipFirstLine="true" /></unmarshal>
+      <split>
+        <simple>${body}</simple>
+        <convertBodyTo type="org.talend.example.omni.core.Asset" />
+        <to uri="log:org.talend.example.omni" />
+        <to uri="bean:osiris-library?method=addAsset"/>
+        <to uri="mock:osiris-data" />
+      </split>
+    </route>
+    <route id="test-provision-metadata" autoStartup="false">
+      <from uri="file:src/test/resources/data/?fileName=osiris-metadata.csv&amp;noop=true" />
+      <unmarshal><csv delimiter="|" skipFirstLine="true" /></unmarshal>
+      <split>
+        <simple>${body}</simple>
+        <convertBodyTo type="org.talend.example.omni.core.AssetMetadata" />
+        <to uri="log:org.talend.example.omni" />
+        <to uri="bean:osiris-library?method=addAssetMetadata"/>
+        <to uri="mock:osiris-meta" />
+      </split>
+    </route>
+    <route id="test-provision-qcitems" autoStartup="false">
+      <from uri="file:src/test/resources/data/?fileName=osiris-qcitems.csv&amp;noop=true" />
+      <unmarshal><csv delimiter="|" skipFirstLine="true" /></unmarshal>
+      <split>
+        <simple>${body}</simple>
+        <convertBodyTo type="org.talend.example.omni.core.AssetQcItem" />
+        <to uri="log:org.talend.example.omni" />
+        <to uri="bean:osiris-library?method=addQcItem"/>
+        <to uri="mock:osiris-qcitems" />
+      </split>
+    </route>
+  </camelContext>
+
+</beans>

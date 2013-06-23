@@ -16,14 +16,24 @@
 
 package org.talend.example.omni.service;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
 
+import org.talend.example.omni.core.Asset;
+import org.talend.example.omni.core.AssetMetadata;
+import org.talend.example.omni.core.AssetQcItem;
 import org.talend.example.omni.core.Osiris;
+import org.talend.example.omni.core.OsirisLibrary;
 import org.talend.example.omni.types.ArrayOfGetAutoQCAssetMetadataResult;
 import org.talend.example.omni.types.ArrayOfGetAutoQCAssetsResult;
 import org.talend.example.omni.types.ArrayOfUpdateAssetsQCItemsResult;
@@ -34,42 +44,18 @@ import org.talend.example.omni.types.UpdateAssetsQCItemsRequest;
 
 public class OsirisService implements Osiris {
 
-	private Map<Integer, GetAutoQCAssetsResult> assets = new HashMap<Integer, GetAutoQCAssetsResult>();
-	private Map<Integer, GetAutoQCAssetMetadataResult> assetMetadata = new HashMap<Integer, GetAutoQCAssetMetadataResult>();
+	private OsirisLibrary library = new OsirisLibrary();
+	// private Map<Integer, GetAutoQCAssetsResult> assets = new HashMap<Integer, GetAutoQCAssetsResult>();
+	// private Map<Integer, GetAutoQCAssetMetadataResult> assetMetadata = new HashMap<Integer, GetAutoQCAssetMetadataResult>();
 
-	public OsirisService() {
-		GregorianCalendar now = new GregorianCalendar();
-
-		try {
-			GetAutoQCAssetsResult asset = new GetAutoQCAssetsResult();
-			asset.setAutoQCUrl("String content");
-			asset.setComment("String content");
-			asset.setMediaLocation("String content");
-			asset.setMediaMovedDate(DatatypeFactory.newInstance().newXMLGregorianCalendar(now));
-			asset.setMediaName("String content");
-			asset.setStatus(2147483646);
-			asset.setCMediaNameInLibrary("String content");
-			asset.setIdQCItems(2147483646);
-			asset.setIdAssetsQCItems(2147483646);
-			asset.setIdAssetsRoot(2147483646);
-			assets.put(asset.getIdQCItems(), asset);
-	
-			asset = new GetAutoQCAssetsResult();
-			asset.setAutoQCUrl("String content");
-			asset.setComment("String content");
-			asset.setMediaLocation("String content");
-			asset.setMediaMovedDate(DatatypeFactory.newInstance().newXMLGregorianCalendar(now));
-			asset.setMediaName("String content");
-			asset.setStatus(2147483647);
-			asset.setCMediaNameInLibrary("String content");
-			asset.setIdQCItems(2147483647);
-			asset.setIdAssetsQCItems(2147483647);
-			asset.setIdAssetsRoot(2147483647);
-			assets.put(asset.getIdQCItems(), asset);
-		} catch (DatatypeConfigurationException e) {
-			// ignore
-		}
+	public OsirisLibrary getLibrary() {
+		return library;
 	}
+
+	public void setLibrary(OsirisLibrary library) {
+		this.library = library;
+	}
+
 
 	public ArrayOfUpdateAssetsQCItemsResult updateItems(UpdateAssetsQCItemsRequest items) throws Exception {
 		// TODO: implement me
@@ -77,15 +63,69 @@ public class OsirisService implements Osiris {
 	}
 
 	public ArrayOfGetAutoQCAssetsResult listAssets(String items, String statuses) {
+		Collection<Integer> is = toIntegerSet(items, ",");
+		Collection<Integer> ss = toIntegerSet(statuses, ",");
 		ArrayOfGetAutoQCAssetsResult result = new ArrayOfGetAutoQCAssetsResult();
-		result.getGetAutoQCAssetsResults().addAll(assets.values());
+		for (Map<Integer, AssetQcItem> qcitems : library.getAssetsQcItems().values()) {
+			for (AssetQcItem qci : qcitems.values()) {
+				if (ss.contains(qci.getQcstatus()) && is.contains(qci.getQcitem())) {
+					Asset asset = library.findAsset(qci.getId());
+					if (asset != null) {
+						GetAutoQCAssetsResult r = new GetAutoQCAssetsResult();
+						r.setAutoQCUrl(asset.getUrl());
+						r.setComment(asset.getComment());
+						r.setMediaLocation(asset.getLocation());
+						r.setMediaMovedDate(toXml(asset.getDateMoved()));
+						r.setMediaName(asset.getName());
+						r.setStatus(qci.getQcstatus());
+						r.setCMediaNameInLibrary(asset.getNameInLibrary());
+						r.setIdAssetsQCItems(qci.getQcid());
+						r.setIdAssetsRoot(qci.getId());
+						r.setIdQCItems(qci.getQcitem());
+						result.getGetAutoQCAssetsResults().add(r);
+					}
+				}
+			}
+		}
         return result;
 	}
 
-	public ArrayOfGetAutoQCAssetMetadataResult listAssetMetadata(long root, String ids) {
+	public ArrayOfGetAutoQCAssetMetadataResult listAssetMetadata(int root, String ids) {
+		Collection<Integer> is = toIntegerSet(ids, ",");
 		ArrayOfGetAutoQCAssetMetadataResult result = new ArrayOfGetAutoQCAssetMetadataResult();
-		result.getGetAutoQCAssetMetadataResults().addAll(assetMetadata.values());
+		Map<Integer, AssetMetadata> meta = library.getAssetsMetadata().get(root);
+		for (AssetMetadata m : meta.values()) {
+			if (is.contains(m.getPropertyId())) {
+				GetAutoQCAssetMetadataResult r = new GetAutoQCAssetMetadataResult();
+				r.setIdAssets(m.getAssetId());
+				r.setIdAssetsRoot(m.getId());
+				r.setIdAssetsubtype(m.getAssetSubtype());
+				r.setIdObject(m.getPropertyId());
+				r.setValue(m.getPropertyValue());
+				result.getGetAutoQCAssetMetadataResults().add(r);
+			}
+		}
         return result;
+	}
+
+	private static Collection<String> toStringSet(String value, String delim) {
+		String[] vs = value.split(delim);
+		HashSet<String> result = new HashSet<String>();
+		result.addAll(Arrays.asList(vs));
+		return result;
+	}
+
+	private static Collection<Integer> toIntegerSet(String value, String delim) {
+		String[] vs = value.split(delim);
+		HashSet<Integer> result = new HashSet<Integer>(vs.length);
+		for (String v : vs) {
+			result.add(Integer.parseInt(v));
+		}
+		return result;
+	}
+	
+	private XMLGregorianCalendar toXml(Date date) {
+		return null;
 	}
 
 }

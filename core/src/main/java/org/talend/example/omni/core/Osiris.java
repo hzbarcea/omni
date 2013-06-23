@@ -44,6 +44,6 @@ public interface Osiris {
 
 	@GET
 	@Path("/GetAutoQCAssetMetadata/{root}/{obids}")
-	ArrayOfGetAutoQCAssetMetadataResult listAssetMetadata(@PathParam("root") long root, @PathParam("obids") String ids);
+	ArrayOfGetAutoQCAssetMetadataResult listAssetMetadata(@PathParam("root") int root, @PathParam("obids") String ids);
 
 }

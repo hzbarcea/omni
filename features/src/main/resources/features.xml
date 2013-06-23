@@ -23,9 +23,10 @@
   <feature name='omni' version='${project.version}' resolver='(obr)'>
     <feature version="${camel.version}">camel</feature>
     <feature version="${camel.version}">camel-blueprint</feature>
-    <feature version="${camel.version}">camel-jaxb</feature>
     <feature version="${camel.version}">camel-jetty</feature>
     <feature version="${camel.version}">camel-cxf</feature>
+    <feature version="${camel.version}">camel-jaxb</feature>
+    <feature version="${camel.version}">camel-csv</feature>
     <feature>http</feature>
 
     <bundle>mvn:org.talend.example.omni/omni-core/${project.version}</bundle>

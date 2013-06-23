@@ -39,19 +39,31 @@
     </jaxrs:providers>
   </jaxrs:server>
 
-  <bean id="osiris" class="org.talend.example.omni.service.OsirisService" />
+  <bean id="osiris-library" class="org.talend.example.omni.core.OsirisLibrary" />
+  <bean id="osiris" class="org.talend.example.omni.service.OsirisService">
+    <property name="library" ref="osiris-library" />
+  </bean>
+
   <bean id="jsonProvider" class="org.apache.cxf.jaxrs.provider.json.JSONProvider">
-      <property name="ignoreNamespaces" value="true"/>
+      <property name="ignoreNamespaces" value="true" />
+      <property name="dropRootElement" value="true" />
   </bean>
 
   <!-- Camel processing rules -->
   <camelContext id="omni" xmlns="http://camel.apache.org/schema/spring">
 
     <!--  This route offers the cxf endpoint using an embedded jetty instance -->
-    <route>
+    <route id="osiris-query">
       <from uri="jetty:http://0.0.0.0:9099/Adoniss.RESTServices/?matchOnUriPrefix=true" />
       <!-- Can do extra processing here -->
       <to uri="direct:osiris" />
+    </route>
+
+    <route id="osiris-assets">
+    </route>
+    <route id="osiris-metadata" autoStartup="true">
+    </route>
+    <route id="osiris-qcitems" autoStartup="true">
     </route>
 
   </camelContext>
