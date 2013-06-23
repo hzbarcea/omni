@@ -59,7 +59,7 @@
     </route>
     <route id="test-provision-metadata" autoStartup="false">
       <from uri="file:src/test/resources/data/?fileName=osiris-metadata.csv&amp;noop=true" />
-      <unmarshal><csv delimiter="|" skipFirstLine="true" /></unmarshal>
+      <unmarshal><csv delimiter="," skipFirstLine="true" /></unmarshal>
       <split>
         <simple>${body}</simple>
         <convertBodyTo type="org.talend.example.omni.core.AssetMetadata" />
@@ -70,7 +70,7 @@
     </route>
     <route id="test-provision-qcitems" autoStartup="false">
       <from uri="file:src/test/resources/data/?fileName=osiris-qcitems.csv&amp;noop=true" />
-      <unmarshal><csv delimiter="|" skipFirstLine="true" /></unmarshal>
+      <unmarshal><csv delimiter="," skipFirstLine="true" /></unmarshal>
       <split>
         <simple>${body}</simple>
         <convertBodyTo type="org.talend.example.omni.core.AssetQcItem" />

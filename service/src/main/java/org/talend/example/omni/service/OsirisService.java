@@ -43,6 +43,7 @@ import org.talend.example.omni.types.UpdateAssetsQCItemsRequest;
 
 
 public class OsirisService implements Osiris {
+	private static final String ALL = "*";
 
 	private OsirisLibrary library = new OsirisLibrary();
 	// private Map<Integer, GetAutoQCAssetsResult> assets = new HashMap<Integer, GetAutoQCAssetsResult>();
@@ -63,12 +64,17 @@ public class OsirisService implements Osiris {
 	}
 
 	public ArrayOfGetAutoQCAssetsResult listAssets(String items, String statuses) {
+		boolean allItems = ALL.equals(items);
+		boolean allStatuses = ALL.equals(statuses);
 		Collection<Integer> is = toIntegerSet(items, ",");
 		Collection<Integer> ss = toIntegerSet(statuses, ",");
 		ArrayOfGetAutoQCAssetsResult result = new ArrayOfGetAutoQCAssetsResult();
+
 		for (Map<Integer, AssetQcItem> qcitems : library.getAssetsQcItems().values()) {
 			for (AssetQcItem qci : qcitems.values()) {
-				if (ss.contains(qci.getQcstatus()) && is.contains(qci.getQcitem())) {
+				boolean matchItem = allItems || is.contains(qci.getQcitem());
+				boolean matchStatus = allStatuses || ss.contains(qci.getQcstatus());
+				if (matchItem && matchStatus) {
 					Asset asset = library.findAsset(qci.getId());
 					if (asset != null) {
 						GetAutoQCAssetsResult r = new GetAutoQCAssetsResult();
@@ -119,7 +125,11 @@ public class OsirisService implements Osiris {
 		String[] vs = value.split(delim);
 		HashSet<Integer> result = new HashSet<Integer>(vs.length);
 		for (String v : vs) {
-			result.add(Integer.parseInt(v));
+			try {
+    			result.add(Integer.parseInt(v));
+			} catch (NumberFormatException e) {
+				// Ignore, but in a realistic scenario we may log as warn or, slightly better, info
+			}
 		}
 		return result;
 	}

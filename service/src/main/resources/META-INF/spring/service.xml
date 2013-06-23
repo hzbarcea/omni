@@ -60,10 +60,34 @@
     </route>
 
     <route id="osiris-assets">
+      <from uri="file:/x1/omni/assets" />
+      <unmarshal><csv delimiter="|" skipFirstLine="true" /></unmarshal>
+      <split>
+        <simple>${body}</simple>
+        <convertBodyTo type="org.talend.example.omni.core.Asset" />
+        <to uri="log:org.talend.example.omni" />
+        <to uri="bean:osiris-library?method=addAsset"/>
+      </split>
     </route>
     <route id="osiris-metadata" autoStartup="true">
+      <from uri="file:/x1/omni/metadata" />
+      <unmarshal><csv delimiter="," skipFirstLine="true" /></unmarshal>
+      <split>
+        <simple>${body}</simple>
+        <convertBodyTo type="org.talend.example.omni.core.AssetMetadata" />
+        <to uri="log:org.talend.example.omni" />
+        <to uri="bean:osiris-library?method=addAssetMetadata"/>
+      </split>
     </route>
     <route id="osiris-qcitems" autoStartup="true">
+      <from uri="file:/x1/omni/qcitems" />
+      <unmarshal><csv delimiter="," skipFirstLine="true" /></unmarshal>
+      <split>
+        <simple>${body}</simple>
+        <convertBodyTo type="org.talend.example.omni.core.AssetQcItem" />
+        <to uri="log:org.talend.example.omni" />
+        <to uri="bean:osiris-library?method=addQcItem"/>
+      </split>
     </route>
 
   </camelContext>
