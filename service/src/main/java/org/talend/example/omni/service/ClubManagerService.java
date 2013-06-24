@@ -56,6 +56,18 @@ public class ClubManagerService implements ClubManager {
     private Map<String, Map<String, Object>> tasks = new HashMap<String, Map<String, Object>>();
     private Set<String> progressQueue = new HashSet<String>();
 
+
+
+    public String status() {
+        step();
+
+        return "ClubManager active. "
+            + "Total: " + tasks.size() 
+            + ", In Progress: " + progressQueue.size()
+            + ", Completed: " + countCompletedTasks();
+    }
+
+
     public Response addCheck(ClubCheck request) {
         String id = Integer.toHexString(AUTO.incrementAndGet());
         if (request.getMediaFilePath() == null || request.getTestPlan() == null) {
@@ -140,5 +152,14 @@ public class ClubManagerService implements ClubManager {
             return true;
         }
         return false;
+    }
+
+    private int countCompletedTasks() {
+        int count = 0;
+        for (Map<String, Object> task : tasks.values()) {
+            Integer percent = (Integer)task.get(PROGRESS);
+            count += (percent != null && percent >= 100) ? 1 : 0;
+        }
+        return count;
     }
 }
