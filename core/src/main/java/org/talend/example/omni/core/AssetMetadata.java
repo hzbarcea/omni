@@ -25,35 +25,35 @@ public class AssetMetadata {
     private int propertyId;
     private String propertyValue;
 
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
-	public int getAssetId() {
-		return assetId;
-	}
-	public void setAssetId(int assetId) {
-		this.assetId = assetId;
-	}
-	public int getAssetSubtype() {
-		return assetSubtype;
-	}
-	public void setAssetSubtype(int assetSubtype) {
-		this.assetSubtype = assetSubtype;
-	}
-	public int getPropertyId() {
-		return propertyId;
-	}
-	public void setPropertyId(int propertyId) {
-		this.propertyId = propertyId;
-	}
-	public String getPropertyValue() {
-		return propertyValue;
-	}
-	public void setPropertyValue(String propertyValue) {
-		this.propertyValue = propertyValue;
-	}
+    public int getId() {
+        return id;
+    }
+    public void setId(int id) {
+        this.id = id;
+    }
+    public int getAssetId() {
+        return assetId;
+    }
+    public void setAssetId(int assetId) {
+        this.assetId = assetId;
+    }
+    public int getAssetSubtype() {
+        return assetSubtype;
+    }
+    public void setAssetSubtype(int assetSubtype) {
+        this.assetSubtype = assetSubtype;
+    }
+    public int getPropertyId() {
+        return propertyId;
+    }
+    public void setPropertyId(int propertyId) {
+        this.propertyId = propertyId;
+    }
+    public String getPropertyValue() {
+        return propertyValue;
+    }
+    public void setPropertyValue(String propertyValue) {
+        this.propertyValue = propertyValue;
+    }
 
 }

@@ -35,15 +35,15 @@ import org.talend.example.omni.types.UpdateAssetsQCItemsRequest;
 public interface Osiris {
 
     @PUT
-	@Path("/UpdateAssetsQCItems")
+    @Path("/UpdateAssetsQCItems")
     ArrayOfUpdateAssetsQCItemsResult updateItems(UpdateAssetsQCItemsRequest items) throws Exception;
 
-	@GET
-	@Path("/GetAutoQCAssets/{items}/{statuses}")
-	ArrayOfGetAutoQCAssetsResult listAssets(@PathParam("items") String items, @PathParam("statuses") String statuses);
+    @GET
+    @Path("/GetAutoQCAssets/{items}/{statuses}")
+    ArrayOfGetAutoQCAssetsResult listAssets(@PathParam("items") String items, @PathParam("statuses") String statuses);
 
-	@GET
-	@Path("/GetAutoQCAssetMetadata/{root}/{obids}")
-	ArrayOfGetAutoQCAssetMetadataResult listAssetMetadata(@PathParam("root") int root, @PathParam("obids") String ids);
+    @GET
+    @Path("/GetAutoQCAssetMetadata/{root}/{obids}")
+    ArrayOfGetAutoQCAssetMetadataResult listAssetMetadata(@PathParam("root") int root, @PathParam("obids") String ids);
 
 }

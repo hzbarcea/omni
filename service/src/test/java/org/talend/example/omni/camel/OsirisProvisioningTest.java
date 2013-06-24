@@ -25,42 +25,42 @@ import org.talend.example.omni.core.OsirisLibrary;
 
 
 public class OsirisProvisioningTest extends CamelSpringTestSupport {
-	private boolean ignore = true;
+    private boolean ignore = true;
 
-	@Override
-	protected AbstractApplicationContext createApplicationContext() {
+    @Override
+    protected AbstractApplicationContext createApplicationContext() {
         return new ClassPathXmlApplicationContext("camel/OsirisProvisioningTest-context.xml");
-	}
+    }
 
-	@Test
-	public void testProvisioning() throws Exception {
-		OsirisLibrary library = applicationContext.getBean("osiris-library", OsirisLibrary.class);
-		assertNotNull(library);
+    @Test
+    public void testProvisioning() throws Exception {
+        OsirisLibrary library = applicationContext.getBean("osiris-library", OsirisLibrary.class);
+        assertNotNull(library);
 
-		if (ignore) {
-			return;
-		}
+        if (ignore) {
+            return;
+        }
 
-		context.startRoute("test-provision-assets");
+        context.startRoute("test-provision-assets");
 
-		MockEndpoint assets = getMandatoryEndpoint("mock:osiris-data", MockEndpoint.class);
-		assets.expectedMessageCount(2);
+        MockEndpoint assets = getMandatoryEndpoint("mock:osiris-data", MockEndpoint.class);
+        assets.expectedMessageCount(2);
 
-		assertMockEndpointsSatisfied();
-		
-		MockEndpoint meta = getMandatoryEndpoint("mock:osiris-meta", MockEndpoint.class);
-		meta.expectedMessageCount(1);
-		MockEndpoint qcitems = getMandatoryEndpoint("mock:osiris-qcitems", MockEndpoint.class);
-		qcitems.expectedMessageCount(8);
+        assertMockEndpointsSatisfied();
+        
+        MockEndpoint meta = getMandatoryEndpoint("mock:osiris-meta", MockEndpoint.class);
+        meta.expectedMessageCount(1);
+        MockEndpoint qcitems = getMandatoryEndpoint("mock:osiris-qcitems", MockEndpoint.class);
+        qcitems.expectedMessageCount(8);
 
-		context.startRoute("test-provision-metadata");
-		context.startRoute("test-provision-qcitems");
+        context.startRoute("test-provision-metadata");
+        context.startRoute("test-provision-qcitems");
 
-		assertMockEndpointsSatisfied();
-	}
+        assertMockEndpointsSatisfied();
+    }
 
-	@Test
-	public void testTimer() throws Exception {
-		Thread.sleep(5000);
-	}
+    @Test
+    public void testTimer() throws Exception {
+        Thread.sleep(5000);
+    }
 }

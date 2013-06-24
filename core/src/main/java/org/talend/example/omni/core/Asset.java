@@ -29,47 +29,47 @@ public class Asset {
     private String name;
     private String nameInLibrary;
 
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
-	public String getUrl() {
-		return url;
-	}
-	public void setUrl(String url) {
-		this.url = url;
-	}
-	public String getComment() {
-		return comment;
-	}
-	public void setComment(String comment) {
-		this.comment = comment;
-	}
-	public String getLocation() {
-		return location;
-	}
-	public void setLocation(String location) {
-		this.location = location;
-	}
-	public Date getDateMoved() {
-		return dateMoved;
-	}
-	public void setDateMoved(Date dateMoved) {
-		this.dateMoved = dateMoved;
-	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	public String getNameInLibrary() {
-		return nameInLibrary;
-	}
-	public void setNameInLibrary(String nameInLibrary) {
-		this.nameInLibrary = nameInLibrary;
-	}
+    public int getId() {
+        return id;
+    }
+    public void setId(int id) {
+        this.id = id;
+    }
+    public String getUrl() {
+        return url;
+    }
+    public void setUrl(String url) {
+        this.url = url;
+    }
+    public String getComment() {
+        return comment;
+    }
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+    public String getLocation() {
+        return location;
+    }
+    public void setLocation(String location) {
+        this.location = location;
+    }
+    public Date getDateMoved() {
+        return dateMoved;
+    }
+    public void setDateMoved(Date dateMoved) {
+        this.dateMoved = dateMoved;
+    }
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+    public String getNameInLibrary() {
+        return nameInLibrary;
+    }
+    public void setNameInLibrary(String nameInLibrary) {
+        this.nameInLibrary = nameInLibrary;
+    }
 
 }

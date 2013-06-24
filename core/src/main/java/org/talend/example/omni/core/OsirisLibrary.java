@@ -22,53 +22,53 @@ import java.util.Map;
 
 public class OsirisLibrary {
 
-	private Map<Integer, Asset> assets = new HashMap<Integer, Asset>();
-	private Map<Integer, Map<Integer, AssetMetadata>> metadata = new HashMap<Integer, Map<Integer, AssetMetadata>>();
-	private Map<Integer, Map<Integer, AssetQcItem>> items = new HashMap<Integer, Map<Integer, AssetQcItem>>();
+    private Map<Integer, Asset> assets = new HashMap<Integer, Asset>();
+    private Map<Integer, Map<Integer, AssetMetadata>> metadata = new HashMap<Integer, Map<Integer, AssetMetadata>>();
+    private Map<Integer, Map<Integer, AssetQcItem>> items = new HashMap<Integer, Map<Integer, AssetQcItem>>();
 
 
-	public Map<Integer, Asset> getAssets() {
-		return assets;
-	}
+    public Map<Integer, Asset> getAssets() {
+        return assets;
+    }
 
-	public Map<Integer, Map<Integer, AssetMetadata>> getAssetsMetadata() {
-		return metadata;
-	}
+    public Map<Integer, Map<Integer, AssetMetadata>> getAssetsMetadata() {
+        return metadata;
+    }
 
-	public Map<Integer, Map<Integer, AssetQcItem>> getAssetsQcItems() {
-		return items;
-	}
+    public Map<Integer, Map<Integer, AssetQcItem>> getAssetsQcItems() {
+        return items;
+    }
 
-	public Asset findAsset(int id) {
-		return assets.get(id);
-	}
+    public Asset findAsset(int id) {
+        return assets.get(id);
+    }
 
-	public void addAsset(Asset asset) {
-		if (asset != null) {
-			assets.put(asset.getId(), asset);
-		}
-	}
+    public void addAsset(Asset asset) {
+        if (asset != null) {
+            assets.put(asset.getId(), asset);
+        }
+    }
 
-	public void addAssetMetadata(AssetMetadata meta) {
-		if (meta != null) {
-			Map<Integer, AssetMetadata> data = metadata.get(meta.getId());
-			if (data == null) {
-				data = new HashMap<Integer, AssetMetadata>();
-				metadata.put(meta.getId(), data);
-			}
-			data.put(meta.getPropertyId(), meta);
-		}
-	}
+    public void addAssetMetadata(AssetMetadata meta) {
+        if (meta != null) {
+            Map<Integer, AssetMetadata> data = metadata.get(meta.getId());
+            if (data == null) {
+                data = new HashMap<Integer, AssetMetadata>();
+                metadata.put(meta.getId(), data);
+            }
+            data.put(meta.getPropertyId(), meta);
+        }
+    }
 
-	public void addQcItem(AssetQcItem qcItem) {
-		if (qcItem != null) {
-			Map<Integer, AssetQcItem> data = items.get(qcItem.getId());
-			if (data == null) {
-				data = new HashMap<Integer, AssetQcItem>();
-				items.put(qcItem.getId(), data);
-			}
-			data.put(qcItem.getQcid(), qcItem);
-		}
-	}
+    public void addQcItem(AssetQcItem qcItem) {
+        if (qcItem != null) {
+            Map<Integer, AssetQcItem> data = items.get(qcItem.getId());
+            if (data == null) {
+                data = new HashMap<Integer, AssetQcItem>();
+                items.put(qcItem.getId(), data);
+            }
+            data.put(qcItem.getQcid(), qcItem);
+        }
+    }
 
 }
