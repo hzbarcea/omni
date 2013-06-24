@@ -45,8 +45,18 @@
       </split>
     </route>
 
+    <route>
+      <from uri="timer://omni/osiris?fixedRate=true&amp;period=1000" />
+      <pollEnrich uri="http://localhost:9099/Adoniss.RESTServices/AdonissRESTService/GetAutoQCAssets/1,2,4,8/0?_type=xml" />
+      <unmarshal><jaxb prettyPrint="false" contextPath="org.talend.example.omni.types" /></unmarshal>
+      <split>
+        <simple>${body.getAutoQCAssetsResults}</simple>
+        <to uri="log:org.talend.example.omni" />
+      </split>
+    </route>
+  
     <!-- provisioning -->
-    <route id="test-provision-assets">
+    <route id="test-provision-assets" autoStartup="false">
       <from uri="file:src/test/resources/data/?fileName=osiris-assets.csv&amp;noop=true" />
       <unmarshal><csv delimiter="|" skipFirstLine="true" /></unmarshal>
       <split>
