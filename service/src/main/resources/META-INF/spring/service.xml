@@ -38,11 +38,17 @@
       <ref bean="jsonProvider"/>
     </jaxrs:providers>
   </jaxrs:server>
+  <jaxrs:server id="club-server" address="camel://direct:club">
+    <jaxrs:serviceBeans>
+      <ref bean="club" />
+    </jaxrs:serviceBeans>
+  </jaxrs:server>
 
   <bean id="osiris-library" class="org.talend.example.omni.core.OsirisLibrary" />
   <bean id="osiris" class="org.talend.example.omni.service.OsirisService">
     <property name="library" ref="osiris-library" />
   </bean>
+  <bean id="club" class="org.talend.example.omni.service.ClubManagerService" />
 
   <bean id="jsonProvider" class="org.apache.cxf.jaxrs.provider.json.JSONProvider">
       <property name="ignoreNamespaces" value="true" />
@@ -53,10 +59,15 @@
   <camelContext id="omni" xmlns="http://camel.apache.org/schema/spring">
 
     <!--  This route offers the cxf endpoint using an embedded jetty instance -->
-    <route id="osiris-query">
+    <route id="osiris-service">
       <from uri="jetty:http://0.0.0.0:9099/Adoniss.RESTServices/?matchOnUriPrefix=true" />
       <!-- Can do extra processing here -->
       <to uri="direct:osiris" />
+    </route>
+    <route id="club-service">
+      <from uri="jetty:http://0.0.0.0:9099/omni/?matchOnUriPrefix=true" />
+      <!-- Can do extra processing here -->
+      <to uri="direct:club" />
     </route>
 
     <route id="osiris-assets">

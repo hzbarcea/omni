@@ -19,14 +19,9 @@ package org.talend.example.omni.service;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
 import org.talend.example.omni.core.Asset;
@@ -114,6 +109,7 @@ public class OsirisService implements Osiris {
         return result;
     }
 
+    @SuppressWarnings("unused")
     private static Collection<String> toStringSet(String value, String delim) {
         String[] vs = value.split(delim);
         HashSet<String> result = new HashSet<String>();
