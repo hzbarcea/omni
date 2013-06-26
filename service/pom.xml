@@ -41,6 +41,10 @@
       <groupId>org.talend.example.omni</groupId>
       <artifactId>omni-core</artifactId>
     </dependency>
+    <dependency>
+      <groupId>org.talend.example.omni</groupId>
+      <artifactId>camel-xmlrpc</artifactId>
+    </dependency>
 
     <dependency>
       <groupId>org.apache.camel</groupId>
@@ -96,14 +100,22 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-test</artifactId>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.camel</groupId>
       <artifactId>camel-test-spring</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.xmlrpc</groupId>
+      <artifactId>xmlrpc-client</artifactId>
+      <scope>test</scope>
     </dependency>
 
   </dependencies>

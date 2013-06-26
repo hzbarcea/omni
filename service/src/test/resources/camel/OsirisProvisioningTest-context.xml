@@ -47,15 +47,38 @@
 
     <route>
       <from uri="timer://omni/osiris?fixedRate=true&amp;period=1000" />
-      <pollEnrich uri="http://localhost:9099/Adoniss.RESTServices/AdonissRESTService/GetAutoQCAssets/1,2,4,8/0?_type=xml" />
-      <unmarshal><jaxb prettyPrint="false" contextPath="org.talend.example.omni.types" /></unmarshal>
+      <pollEnrich uri="http://localhost:9090/Adoniss.RESTServices/AdonissRESTService/GetAutoQCAssets/1,2,4,8/0?_type=xml" />
+      <!-- unmarshal><jaxb prettyPrint="false" contextPath="org.talend.example.omni.types" /></unmarshal>
       <split>
         <simple>${body.getAutoQCAssetsResults}</simple>
         <to uri="log:org.talend.example.omni" />
-      </split>
+      </split -->
+      <convertBodyTo type="java.lang.String" />
+      <to uri="log:osiris" />
     </route>
-  
-    <!-- provisioning -->
+        <!--  aggregate on the media file and format a proper message to send below -->
+        <!-- to uri="direct-vm:triggerVODQC" / -->
+        <!-- add extra callback headers and call back on clubmanager:request -->
+
+    <!-- 
+    <route>
+      <from uri="clubmanager-request baton check" />
+      <to uri="xmlrpc:baton" />
+      <!-
+        result: taskId=00000137a00ef4180475d64b000a0004001c009c" 
+        remember in list of pending requests
+      ->
+    </route>
+    
+    <route>
+      <from uri="timer" />
+      <filter><!- completed tasks -></filter>
+      <!- prepare message using stored uris in headers passed from bpm ->
+      <to uri="direct-vm:batonCallback" />
+    </route>
+    -->
+
+    <!-- provisioning of Osiris -->
     <route id="test-provision-assets" autoStartup="false">
       <from uri="file:src/test/resources/data/?fileName=osiris-assets.csv&amp;noop=true" />
       <unmarshal><csv delimiter="|" skipFirstLine="true" /></unmarshal>

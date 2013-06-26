@@ -64,10 +64,16 @@
       <!-- Can do extra processing here -->
       <to uri="direct:osiris" />
     </route>
-    <route id="club-service">
+    <route id="club-manager">
       <from uri="jetty:http://0.0.0.0:9099/omni/?matchOnUriPrefix=true" />
       <!-- Can do extra processing here -->
       <to uri="direct:club" />
+    </route>
+    <route>
+      <from uri="direct:club"/>
+      <to uri="xmlrpc:http://localhost:8080/Baton?synchronous=true&amp;basicUserName=user&amp;basicPassword=user" />
+      <convertBodyTo type="java.lang.String" />
+      <to uri="log:club" />
     </route>
 
     <route id="osiris-assets">

@@ -19,7 +19,18 @@
   <repository>mvn:org.apache.karaf.assemblies.features/standard/${karaf.version}/xml/features</repository>
   <repository>mvn:org.apache.karaf.assemblies.features/enterprise/${karaf.version}/xml/features</repository>
   <repository>mvn:org.apache.camel.karaf/apache-camel/${camel.version}/xml/features</repository>
-    
+
+  <feature name='omni-xmlrpc' version='${project.version}' resolver='(obr)' start-level='50'>
+    <bundle dependency='true'>mvn:commons-codec/commons-codec/${commons-codec.version}</bundle>
+    <bundle dependency='true'>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.commons-httpclient/${commons-httpclient.bundle-version}</bundle>
+    <bundle dependency='true'>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.xmlrpc-client/${xmlrpc-client.bundle-version}</bundle>
+    <bundle dependency='true'>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.ws-commons-util/${ws-commons-util.bundle-version}</bundle>
+
+    <feature version='${camel.version}'>camel-core</feature>
+
+    <bundle>mvn:org.talend.example.omni/camel-xmlrpc/${project.version}</bundle>
+  </feature>
+
   <feature name='omni' version='${project.version}' resolver='(obr)'>
     <feature version="${camel.version}">camel</feature>
     <feature version="${camel.version}">camel-blueprint</feature>
@@ -29,6 +40,7 @@
     <feature version="${camel.version}">camel-csv</feature>
     <feature>http</feature>
 
+    <feature version='${project.version}'>omni-xmlrpc</feature>
     <bundle>mvn:org.talend.example.omni/omni-core/${project.version}</bundle>
     <bundle>mvn:org.talend.example.omni/omni-service/${project.version}</bundle>
   </feature>

@@ -33,6 +33,8 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
     <camel.version>2.10.2</camel.version>
+    <commons-codec.version>1.6</commons-codec.version>
+    <commons-httpclient.bundle-version>3.1_7</commons-httpclient.bundle-version>
     <cxf.version>2.7.3</cxf.version>
     <jetty.version>7.6.7.v20120910</jetty.version>
     <jsr250-api.version>1.0</jsr250-api.version>
@@ -45,6 +47,7 @@
     <spring.version>3.0.7.RELEASE</spring.version>
     <xmlrpc.version>3.1.3</xmlrpc.version>
     <xmlrpc-client.bundle-version>3.1.3_1</xmlrpc-client.bundle-version>
+    <ws-commons-util.bundle-version>1.0.2_2</ws-commons-util.bundle-version>
 
     <maven-compiler-plugin.version>2.5.1</maven-compiler-plugin.version>
     <maven-bundle-plugin.version>2.1.0</maven-bundle-plugin.version>
@@ -73,6 +76,11 @@
       <dependency>
         <groupId>org.talend.example.omni</groupId>
         <artifactId>omni-core</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.talend.example.omni</groupId>
+        <artifactId>camel-xmlrpc</artifactId>
         <version>${project.version}</version>
       </dependency>
 
@@ -310,7 +318,7 @@
           </executions>
           <configuration>
             <schemaDirectory>src/main/resources/xsd</schemaDirectory>
-            <verbose>true</verbose>
+            <!-- verbose>true</verbose -->
             <strict>false</strict>
             <extension>true</extension>
             <args>
