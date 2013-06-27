@@ -49,6 +49,8 @@
     <property name="library" ref="osiris-library" />
   </bean>
   <bean id="club" class="org.talend.example.omni.service.ClubManagerService" />
+  <bean id="qcAaggregator" class="org.talend.example.omni.service.AssetQCAggregator"/>
+  <bean id="omni-manager" class="org.talend.example.omni.service.OmniManagedService"/>
 
   <bean id="jsonProvider" class="org.apache.cxf.jaxrs.provider.json.JSONProvider">
       <property name="ignoreNamespaces" value="true" />
@@ -57,7 +59,7 @@
       <property name="serializeAsArray" value="true" />
   </bean>
 
-  <!-- Camel processing rules -->
+
   <camelContext id="omni" xmlns="http://camel.apache.org/schema/spring">
 
     <!--  This route offers the cxf endpoint using an embedded jetty instance -->
@@ -78,7 +80,48 @@
       <to uri="log:club" />
     </route>
 
-    <route id="osiris-assets">
+
+    <!-- Continuous polling tasks (BPM) -->
+    <route id="poll-tasks" autoStartup="false">
+      <from uri="timer://omni/osiris?fixedRate=true&amp;period=60000" />
+      <pollEnrich uri="http://localhost:9099/Adoniss.RESTServices/AdonissRESTService/GetAutoQCAssets/1,2,4,8/0?_type=xml" />
+      <unmarshal><jaxb prettyPrint="false" contextPath="org.talend.example.omni.types" /></unmarshal>
+      <split>
+        <simple>${body.getAutoQCAssetsResults}</simple>
+        <setHeader headerName="mediaKey"><simple>${body.mediaLocation}</simple></setHeader>
+        <to uri="log:org.talend.example.omni" />
+        <aggregate strategyRef="qcAaggregator" completionTimeout="1000">
+          <correlationExpression>
+            <simple>header.mediaKey</simple>
+          </correlationExpression>
+          <to uri="log:org.talend.example.omni.AGGREGATED" />
+          <to uri="direct:manage-tasks" />
+        </aggregate>
+      </split>
+      <to uri="log:osiris" />
+    </route>
+
+    <route id="manage-tasks">
+      <from uri="direct:manage-tasks" />
+      <filter>
+        <method ref="omni-manager" method="newTask" />
+        <to uri="bean:omni-manager?method=trackTask" />
+        <setBody><simple>${header.mediaKey}</simple></setBody>
+        <to uri="direct:start-bp" />
+        <to uri="bean:omni-manager?method=scheduleTask" />
+      </filter>
+    </route>
+
+    <route id="bp-start">
+      <from uri="direct:start-bp" />
+      <setHeader headerName="bpStart"><constant>urn:start</constant></setHeader>
+      <setHeader headerName="bpTrigger"><constant>urn:trigger</constant></setHeader>
+      <to uri="log:org.talend.example.omni.SCHEDULE" />
+    </route>
+
+
+    <!-- Provisioning of the mock osiris service -->
+    <route id="osiris-assets" autoStartup="false">
       <from uri="file:/x1/omni/assets" />
       <unmarshal><csv delimiter="|" skipFirstLine="true" /></unmarshal>
       <split>
@@ -88,7 +131,7 @@
         <to uri="bean:osiris-library?method=addAsset"/>
       </split>
     </route>
-    <route id="osiris-metadata" autoStartup="true">
+    <route id="osiris-metadata" autoStartup="false">
       <from uri="file:/x1/omni/metadata" />
       <unmarshal><csv delimiter="," skipFirstLine="true" /></unmarshal>
       <split>
@@ -98,7 +141,7 @@
         <to uri="bean:osiris-library?method=addAssetMetadata"/>
       </split>
     </route>
-    <route id="osiris-qcitems" autoStartup="true">
+    <route id="osiris-qcitems" autoStartup="false">
       <from uri="file:/x1/omni/qcitems" />
       <unmarshal><csv delimiter="," skipFirstLine="true" /></unmarshal>
       <split>
