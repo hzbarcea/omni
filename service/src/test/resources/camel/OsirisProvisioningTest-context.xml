@@ -28,13 +28,18 @@
       http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
 
   <bean id="osiris-library" class="org.talend.example.omni.core.OsirisLibrary" />
-
   <bean id="noErrorHandler" class="org.apache.camel.builder.NoErrorHandlerBuilder"/>
+  <bean id="qcAaggregator" class="org.talend.example.omni.service.AssetQCAggregator"/>
+  <bean id="omni-manager" class="org.talend.example.omni.service.OmniManagedService"/>
 
   <camelContext id="camel" errorHandlerRef="noErrorHandler"
       xmlns="http://camel.apache.org/schema/spring">
 
-    <route>
+    <dataFormats>
+      <json id="json" />
+    </dataFormats>
+
+    <route autoStartup="false">
       <from uri="file:src/test/resources/data/?fileName=osiris-data.csv&amp;noop=true" />
       <unmarshal><csv delimiter="|" skipFirstLine="true" /></unmarshal>
       <split>
@@ -46,16 +51,43 @@
     </route>
 
     <route>
-      <from uri="timer://omni/osiris?fixedRate=true&amp;period=1000" />
-      <pollEnrich uri="http://localhost:9090/Adoniss.RESTServices/AdonissRESTService/GetAutoQCAssets/1,2,4,8/0?_type=xml" />
-      <!-- unmarshal><jaxb prettyPrint="false" contextPath="org.talend.example.omni.types" /></unmarshal>
+      <from uri="timer://omni/osiris?fixedRate=true&amp;period=3000" />
+      <pollEnrich uri="http://localhost:9099/Adoniss.RESTServices/AdonissRESTService/GetAutoQCAssets/1,2,4,8/0?_type=xml" />
+      <!-- unmarshal ref="json" / -->
+      <unmarshal><jaxb prettyPrint="false" contextPath="org.talend.example.omni.types" /></unmarshal>
       <split>
         <simple>${body.getAutoQCAssetsResults}</simple>
+        <setHeader headerName="mediaKey"><simple>${body.mediaLocation}</simple></setHeader>
         <to uri="log:org.talend.example.omni" />
-      </split -->
-      <convertBodyTo type="java.lang.String" />
+        <aggregate strategyRef="qcAaggregator" completionTimeout="1000">
+          <correlationExpression>
+            <simple>header.mediaKey</simple>
+          </correlationExpression>
+          <to uri="log:org.talend.example.omni.AGGREGATED" />
+          <to uri="direct:manage-tasks" />
+        </aggregate>
+      </split>
       <to uri="log:osiris" />
     </route>
+    
+    <route id="manage-tasks">
+      <from uri="direct:manage-tasks" />
+      <filter>
+        <method ref="omni-manager" method="newTask" />
+        <to uri="bean:omni-manager?method=trackTask" />
+        <setBody><simple>${header.mediaKey}</simple></setBody>
+        <to uri="direct:start-bp" />
+        <to uri="bean:omni-manager?method=scheduleTask" />
+      </filter>
+    </route>
+
+    <route id="bp-start">
+      <from uri="direct:start-bp" />
+      <setHeader headerName="bpStart"><constant>urn:start</constant></setHeader>
+      <setHeader headerName="bpTrigger"><constant>urn:trigger</constant></setHeader>
+      <to uri="log:org.talend.example.omni.SCHEDULE" />
+    </route>
+
         <!--  aggregate on the media file and format a proper message to send below -->
         <!-- to uri="direct-vm:triggerVODQC" / -->
         <!-- add extra callback headers and call back on clubmanager:request -->

@@ -67,7 +67,6 @@ public class ClubManagerService implements ClubManager {
             + ", Completed: " + countCompletedTasks();
     }
 
-
     public Response addCheck(ClubCheck request) {
         String id = Integer.toHexString(AUTO.incrementAndGet());
         if (request.getMediaFilePath() == null || request.getTestPlan() == null) {
