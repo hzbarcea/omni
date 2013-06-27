@@ -22,20 +22,26 @@ import java.util.Map;
 import org.apache.camel.Body;
 import org.apache.camel.Exchange;
 import org.apache.camel.Header;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class OmniManagedService {
-    
+    private static final Logger LOG = LoggerFactory.getLogger(OmniManagedService.class);
+
     private Map<String, Map<String, Object>> pendingTasks = new HashMap<String, Map<String, Object>>();
 
     @SuppressWarnings("unchecked")
     public boolean newTask(Exchange exchange) {
         Map<String, Object> task = exchange.getIn().getBody(Map.class);
         String key = (String)task.get("mediaKey");
-        return !pendingTasks.containsKey(key);
+        boolean pending = pendingTasks.containsKey(key);
+        LOG.info("FILTER task key='{}'. Task {} tracked", key, pending ? "ALREADY" : "NOT");
+        return !pending;
     }
 
     public void trackTask(Map<String, Object> task) {
+        LOG.info("TRACKING task key='{}'", task.get(OmniConstants.TASK_KEY));
         task.put(OmniConstants.TASK_STATUS, OmniConstants.STATUS_PENDING);
         pendingTasks.put(getKey(task), task);
     }
@@ -43,14 +49,17 @@ public class OmniManagedService {
     public void scheduleTask(@Body String key, 
             @Header(value = OmniConstants.TASK_PROCESS_URI) String bpStart,
             @Header(value = OmniConstants.TASK_TRIGGER_URI) String bpTrigger) {
+        LOG.info("SCHEDULING task key='{}'", key);
+
         Map<String, Object> task = pendingTasks.get(key);
         task.put(OmniConstants.TASK_PROCESS_URI, bpStart);
         task.put(OmniConstants.TASK_TRIGGER_URI, bpTrigger);
         
         // Invoke Baton.verifyFile and the taskId
-        String taskId = "0000"; // Baton.verifyFile(...)
+        String taskId = "00000137a00ef4180475d64b000a0004001c009c"; // Baton.verifyFile(...)
         task.put(OmniConstants.TASK_ID, taskId);
         task.put(OmniConstants.TASK_STATUS, OmniConstants.STATUS_SCHEDULED);
+        LOG.info("BATON verifyFile scheduled task key='{}' with taskId='{}'", key, taskId);
     }
 
     private String getKey(Map<String, Object> task) {

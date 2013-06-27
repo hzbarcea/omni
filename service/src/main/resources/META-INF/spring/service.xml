@@ -84,17 +84,17 @@
     <!-- Continuous polling tasks (BPM) -->
     <route id="poll-tasks" autoStartup="false">
       <from uri="timer://omni/osiris?fixedRate=true&amp;period=60000" />
+      <setBody><constant>poll-tasks TRIGGERED</constant></setBody>
+      <to uri="log:org.talend.example.omni.TASKS" />
       <pollEnrich uri="http://localhost:9099/Adoniss.RESTServices/AdonissRESTService/GetAutoQCAssets/1,2,4,8/0?_type=xml" />
       <unmarshal><jaxb prettyPrint="false" contextPath="org.talend.example.omni.types" /></unmarshal>
       <split>
         <simple>${body.getAutoQCAssetsResults}</simple>
         <setHeader headerName="mediaKey"><simple>${body.mediaLocation}</simple></setHeader>
-        <to uri="log:org.talend.example.omni" />
         <aggregate strategyRef="qcAaggregator" completionTimeout="1000">
           <correlationExpression>
             <simple>header.mediaKey</simple>
           </correlationExpression>
-          <to uri="log:org.talend.example.omni.AGGREGATED" />
           <to uri="direct:manage-tasks" />
         </aggregate>
       </split>
@@ -116,7 +116,6 @@
       <from uri="direct:start-bp" />
       <setHeader headerName="bpStart"><constant>urn:start</constant></setHeader>
       <setHeader headerName="bpTrigger"><constant>urn:trigger</constant></setHeader>
-      <to uri="log:org.talend.example.omni.SCHEDULE" />
     </route>
 
 

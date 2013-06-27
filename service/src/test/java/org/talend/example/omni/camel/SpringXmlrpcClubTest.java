@@ -16,13 +16,10 @@
  */
 package org.talend.example.omni.camel;
 
-import java.util.List;
-
 import org.apache.camel.component.mock.MockEndpoint;
 import org.apache.camel.component.xmlrpc.XmlRpcConstants;
-import org.apache.camel.component.xmlrpc.XmlRpcRequestImpl;
 import org.apache.camel.test.junit4.CamelSpringTestSupport;
-import org.apache.xmlrpc.XmlRpcRequest;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -30,6 +27,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 public class SpringXmlrpcClubTest extends CamelSpringTestSupport {
     
     @Test
+    @Ignore
     public void testRequestMessage() throws Exception {
         MockEndpoint mock = getMockEndpoint("mock:club");
         mock.expectedMessageCount(1);
