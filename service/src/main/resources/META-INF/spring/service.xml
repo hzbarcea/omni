@@ -54,12 +54,7 @@
       <property name="ignoreNamespaces" value="true" />
       <property name="dropCollectionWrapperElement" value="true" />
       <property name="marshallAsJaxbElement" value="true" />
-      <!-- property name="dropRootElement" value="true" / -->
-      <!-- property name="outDropElements">
-        <list>
-          <value>{http://schemas.datacontract.org/2004/07/Adoniss.Model.Adoniss}GetAutoQCAssets_Result</value>
-        </list>
-      </property -->
+      <property name="serializeAsArray" value="true" />
   </bean>
 
   <!-- Camel processing rules -->
