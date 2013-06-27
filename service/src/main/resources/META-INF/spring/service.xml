@@ -52,7 +52,14 @@
 
   <bean id="jsonProvider" class="org.apache.cxf.jaxrs.provider.json.JSONProvider">
       <property name="ignoreNamespaces" value="true" />
-      <property name="dropRootElement" value="true" />
+      <property name="dropCollectionWrapperElement" value="true" />
+      <property name="marshallAsJaxbElement" value="true" />
+      <!-- property name="dropRootElement" value="true" / -->
+      <!-- property name="outDropElements">
+        <list>
+          <value>{http://schemas.datacontract.org/2004/07/Adoniss.Model.Adoniss}GetAutoQCAssets_Result</value>
+        </list>
+      </property -->
   </bean>
 
   <!-- Camel processing rules -->
@@ -70,7 +77,7 @@
       <to uri="direct:club" />
     </route>
     <route>
-      <from uri="direct:club"/>
+      <from uri="direct:club-service"/>
       <to uri="xmlrpc:http://localhost:8080/Baton?synchronous=true&amp;basicUserName=user&amp;basicPassword=user" />
       <convertBodyTo type="java.lang.String" />
       <to uri="log:club" />

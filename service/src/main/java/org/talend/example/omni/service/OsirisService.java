@@ -20,6 +20,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -58,7 +59,15 @@ public class OsirisService implements Osiris {
         return null;
     }
 
-    public ArrayOfGetAutoQCAssetsResult listAssets(String items, String statuses) {
+    public ArrayOfGetAutoQCAssetsResult listAssetsXml(String items, String statuses) {
+        return listAssets(items, statuses);
+    }
+
+    public List<GetAutoQCAssetsResult> listAssetsJson(String items, String statuses) {
+        return listAssets(items, statuses).getGetAutoQCAssetsResults();
+    }
+
+    private ArrayOfGetAutoQCAssetsResult listAssets(String items, String statuses) {
         boolean allItems = ALL.equals(items);
         boolean allStatuses = ALL.equals(statuses);
         Collection<Integer> is = toIntegerSet(items, ",");

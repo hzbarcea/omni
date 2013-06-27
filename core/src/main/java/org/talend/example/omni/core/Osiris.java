@@ -16,6 +16,8 @@
 
 package org.talend.example.omni.core;
 
+import java.util.List;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
@@ -26,6 +28,7 @@ import javax.ws.rs.Produces;
 import org.talend.example.omni.types.ArrayOfGetAutoQCAssetMetadataResult;
 import org.talend.example.omni.types.ArrayOfGetAutoQCAssetsResult;
 import org.talend.example.omni.types.ArrayOfUpdateAssetsQCItemsResult;
+import org.talend.example.omni.types.GetAutoQCAssetsResult;
 import org.talend.example.omni.types.UpdateAssetsQCItemsRequest;
 
 
@@ -39,8 +42,14 @@ public interface Osiris {
     ArrayOfUpdateAssetsQCItemsResult updateItems(UpdateAssetsQCItemsRequest items) throws Exception;
 
     @GET
+    @Produces({ "application/xml" })
     @Path("/GetAutoQCAssets/{items}/{statuses}")
-    ArrayOfGetAutoQCAssetsResult listAssets(@PathParam("items") String items, @PathParam("statuses") String statuses);
+    ArrayOfGetAutoQCAssetsResult listAssetsXml(@PathParam("items") String items, @PathParam("statuses") String statuses);
+
+    @GET
+    @Produces({ "application/json" })
+    @Path("/GetAutoQCAssets/{items}/{statuses}")
+    List<GetAutoQCAssetsResult> listAssetsJson(@PathParam("items") String items, @PathParam("statuses") String statuses);
 
     @GET
     @Path("/GetAutoQCAssetMetadata/{root}/{obids}")
