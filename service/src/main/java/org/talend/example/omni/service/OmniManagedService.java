@@ -16,8 +16,11 @@
 
 package org.talend.example.omni.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import org.apache.camel.Body;
 import org.apache.camel.Exchange;
@@ -28,6 +31,7 @@ import org.slf4j.LoggerFactory;
 
 public class OmniManagedService {
     private static final Logger LOG = LoggerFactory.getLogger(OmniManagedService.class);
+    private static final Random RAND = new Random();
 
     private Map<String, Map<String, Object>> pendingTasks = new HashMap<String, Map<String, Object>>();
 
@@ -38,6 +42,10 @@ public class OmniManagedService {
         boolean pending = pendingTasks.containsKey(key);
         LOG.info("FILTER task key='{}'. Task {} tracked", key, pending ? "ALREADY" : "NOT");
         return !pending;
+    }
+
+    public boolean random(Exchange exchange) {
+        return RAND.nextBoolean();
     }
 
     public void trackTask(Map<String, Object> task) {
@@ -62,7 +70,23 @@ public class OmniManagedService {
         LOG.info("BATON verifyFile scheduled task key='{}' with taskId='{}'", key, taskId);
     }
 
+    public List<String> monitorScheduledTasks() {
+        List<String> result = new ArrayList<String>();
+        for (Map<String, Object> task : pendingTasks.values()) {
+            if (OmniConstants.STATUS_SCHEDULED.equals((String)task.get(OmniConstants.TASK_STATUS))) {
+                result.add((String)task.get(OmniConstants.TASK_ID));
+            }
+        }
+        return result;
+    }
+
+    public Map<String, Object> completeTask(@Body String key) {
+        Map<String, Object> task = pendingTasks.get(key);
+        task.put(OmniConstants.TASK_STATUS, OmniConstants.STATUS_COMPLETE);
+        return task;
+    }
+
     private String getKey(Map<String, Object> task) {
-        return (String)task.get("mediaKey");
+        return (String)task.get(OmniConstants.TASK_KEY);
     }
 }

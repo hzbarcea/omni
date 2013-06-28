@@ -114,8 +114,51 @@
 
     <route id="bp-start">
       <from uri="direct:start-bp" />
-      <setHeader headerName="bpStart"><constant>urn:start</constant></setHeader>
-      <setHeader headerName="bpTrigger"><constant>urn:trigger</constant></setHeader>
+      <setHeader headerName="bpStart"><constant>direct:trigger-bp</constant></setHeader>
+      <setHeader headerName="bpTrigger"><constant>direct:trigger-bp</constant></setHeader>
+    </route>
+    <route id="bp-trigger">
+      <from uri="direct:trigger-bp" />
+      <to uri="log:org.talend.example.omni.TriggerBPM" />
+      <!-- TODO: correlation with the qc_items and update status in adoniss -->
+    </route>
+    <route id="club-status">
+      <from uri="direct:club-check-status" />
+      <filter>
+        <!-- TODO: simulate completion with a completely random expression -->
+        <method ref="omni-manager" method="random" />
+        <setHeader headerName='status'><constant>Complete</constant></setHeader>
+        <!-- TODO: correlation with the qc_items and update status in Adoniss -->
+      </filter>
+    </route>
+
+
+    <!-- Poll for completed tasks -->
+    <route id="poll-complete" autoStartup="false">
+      <from uri="timer://omni/club?fixedRate=true&amp;period=90000" />
+      <setBody><constant>poll-complete TRIGGERED</constant></setBody>
+      <to uri="log:org.talend.example.omni.COMPLETE" />
+      <to uri="bean:omni-manager?method=monitorScheduledTasks" />
+      <split>
+        <simple>${body}</simple>
+        <to uri="direct:club-check-status" />
+        <choice>
+          <when>
+            <simple>${header.status} == 'Complete'</simple>
+            <to uri="bean:omni-manager?method=completeTask" />
+            <!-- now we got the complete task (Map<String, Object), invoke back on BPM -->
+            <recipientList><simple>${body['bpTrigger']}</simple></recipientList>
+          </when>
+          <when>
+            <simple>${header.status} == 'Aborted'</simple>
+            <to uri="log:org.talend.example.omni.ABORTED" />
+            <!-- ... or call on the BPM... -->
+          </when>
+          <otherwise>
+            <!-- do nothing, wait for completion; could log, but... nah -->
+          </otherwise>
+        </choice>
+      </split>
     </route>
 
 
