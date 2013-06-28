@@ -80,8 +80,15 @@ public class OmniManagedService {
         return result;
     }
 
-    public Map<String, Object> completeTask(@Body String key) {
-        Map<String, Object> task = pendingTasks.get(key);
+    public Map<String, Object> completeTask(@Body String id) {
+        Map<String, Object> task = null;
+        for (Map<String, Object> t : pendingTasks.values()) {
+            if (id.equals((String)t.get(OmniConstants.TASK_ID))) {
+                task = t;
+                break;
+            }
+        }
+        LOG.info("BPM completing task: taskId='{}'", id);
         task.put(OmniConstants.TASK_STATUS, OmniConstants.STATUS_COMPLETE);
         return task;
     }

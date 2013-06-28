@@ -87,28 +87,6 @@
       <to uri="log:org.talend.example.omni.SCHEDULE" />
     </route>
 
-        <!--  aggregate on the media file and format a proper message to send below -->
-        <!-- to uri="direct-vm:triggerVODQC" / -->
-        <!-- add extra callback headers and call back on clubmanager:request -->
-
-    <!-- 
-    <route>
-      <from uri="clubmanager-request baton check" />
-      <to uri="xmlrpc:baton" />
-      <!-
-        result: taskId=00000137a00ef4180475d64b000a0004001c009c" 
-        remember in list of pending requests
-      ->
-    </route>
-    
-    <route>
-      <from uri="timer" />
-      <filter><!- completed tasks -></filter>
-      <!- prepare message using stored uris in headers passed from bpm ->
-      <to uri="direct-vm:batonCallback" />
-    </route>
-    -->
-
     <!-- provisioning of Osiris -->
     <route id="test-provision-assets" autoStartup="false">
       <from uri="file:src/test/resources/data/?fileName=osiris-assets.csv&amp;noop=true" />

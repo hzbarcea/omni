@@ -98,7 +98,7 @@
           <to uri="direct:manage-tasks" />
         </aggregate>
       </split>
-      <to uri="log:osiris" />
+      <!-- to uri="log:osiris" / -->
     </route>
 
     <route id="manage-tasks">
